@@ -63,56 +63,56 @@ namespace MyLeasing.Web.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create(AddUserViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = await CreateUserAsync(model);
-        //        if (user != null)
-        //        {
-        //            var owner = new Owner
-        //            {
-        //                Contracts = new List<Contract>(),
-        //                Properties = new List<Property>(),
-        //                User = user
-        //            };
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(AddUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await CreateUserAsync(model);
+                if (user != null)
+                {
+                    var owner = new Owner
+                    {
+                        Contracts = new List<Contract>(),
+                        Properties = new List<Property>(),
+                        User = user
+                    };
 
-        //            _dataContext.Owners.Add(owner);
-        //            await _dataContext.SaveChangesAsync();
-        //            return RedirectToAction("Index");
-        //        }
+                    _dataContext.Owners.Add(owner);
+                    await _dataContext.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
 
-        //        ModelState.AddModelError(string.Empty, "User with this eamil already exists.");
-        //    }
+                ModelState.AddModelError(string.Empty, "User with this eamil already exists.");
+            }
 
-        //    return View(model);
-        //}
+            return View(model);
+        }
 
-        //private async Task<User> CreateUserAsync(AddUserViewModel model)
-        //{
-        //    var user = new User
-        //    {
-        //        Address = model.Address,
-        //        Document = model.Document,
-        //        Email = model.Username,
-        //        FirstName = model.FirstName,
-        //        LastName = model.LastName,
-        //        PhoneNumber = model.PhoneNumber,
-        //        UserName = model.Username
-        //    };
+        private async Task<User> CreateUserAsync(AddUserViewModel model)
+        {
+            var user = new User
+            {
+                Address = model.Address,
+                Document = model.Document,
+                Email = model.Username,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PhoneNumber = model.PhoneNumber,
+                UserName = model.Username
+            };
 
-        //    var result = await _userHelper.AddUserAsync(user, model.Password);
-        //    if (result.Succeeded)
-        //    {
-        //        user = await _userHelper.GetUserByEmailAsync(model.Username);
-        //        await _userHelper.AddUserToRoleAsync(user, "Owner");
-        //        return user;
-        //    }
+            var result = await _userHelper.AddUserAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                user = await _userHelper.GetUserByEmailAsync(model.Username);
+                await _userHelper.AddUserToRoleAsync(user, "Owner");
+                return user;
+            }
 
-        //    return null;
-        //}
+            return null;
+        }
 
         // GET: Owners/Edit/5
         public async Task<IActionResult> Edit(int? id)
