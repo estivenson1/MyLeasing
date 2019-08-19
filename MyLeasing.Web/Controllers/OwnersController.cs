@@ -123,84 +123,84 @@ namespace MyLeasing.Web.Controllers
             return null;
         }
 
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var owner = await _dataContext.Owners
-        //        .Include(o => o.User)
-        //        .FirstOrDefaultAsync(o => o.Id == id.Value);
-        //    if (owner == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var owner = await _dataContext.Owners
+                .Include(o => o.User)
+                .FirstOrDefaultAsync(o => o.Id == id.Value);
+            if (owner == null)
+            {
+                return NotFound();
+            }
 
-        //    var model = new EditUserViewModel
-        //    {
-        //        Address = owner.User.Address,
-        //        Document = owner.User.Document,
-        //        FirstName = owner.User.FirstName,
-        //        Id = owner.Id,
-        //        LastName = owner.User.LastName,
-        //        PhoneNumber = owner.User.PhoneNumber
-        //    };
+            var model = new EditUserViewModel
+            {
+                Address = owner.User.Address,
+                Document = owner.User.Document,
+                FirstName = owner.User.FirstName,
+                Id = owner.Id,
+                LastName = owner.User.LastName,
+                PhoneNumber = owner.User.PhoneNumber
+            };
 
-        //    return View(model);
-        //}
+            return View(model);
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(EditUserViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var owner = await _dataContext.Owners
-        //            .Include(o => o.User)
-        //            .FirstOrDefaultAsync(o => o.Id == model.Id);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var owner = await _dataContext.Owners
+                    .Include(o => o.User)
+                    .FirstOrDefaultAsync(o => o.Id == model.Id);
 
-        //        owner.User.Document = model.Document;
-        //        owner.User.FirstName = model.FirstName;
-        //        owner.User.LastName = model.LastName;
-        //        owner.User.Address = model.Address;
-        //        owner.User.PhoneNumber = model.PhoneNumber;
+                owner.User.Document = model.Document;
+                owner.User.FirstName = model.FirstName;
+                owner.User.LastName = model.LastName;
+                owner.User.Address = model.Address;
+                owner.User.PhoneNumber = model.PhoneNumber;
 
-        //        await _userHelper.UpdateUserAsync(owner.User);
-        //        return RedirectToAction(nameof(Index));
-        //    }
+                await _userHelper.UpdateUserAsync(owner.User);
+                return RedirectToAction(nameof(Index));
+            }
 
-        //    return View(model);
-        //}
+            return View(model);
+        }
 
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var owner = await _dataContext.Owners
-        //        .Include(o => o.User)
-        //        .Include(o => o.Properties)
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (owner == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var owner = await _dataContext.Owners
+                .Include(o => o.User)
+                .Include(o => o.Properties)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (owner == null)
+            {
+                return NotFound();
+            }
 
-        //    if (owner.Properties.Count != 0)
-        //    {
-        //        ModelState.AddModelError(string.Empty, "Owner can't be delete because it has properties.");
-        //        return RedirectToAction(nameof(Index));
-        //    }
+            if (owner.Properties.Count != 0)
+            {
+                ModelState.AddModelError(string.Empty, "Owner can't be delete because it has properties.");
+                return RedirectToAction(nameof(Index));
+            }
 
-        //    _dataContext.Owners.Remove(owner);
-        //    await _dataContext.SaveChangesAsync();
-        //    await _userHelper.DeleteUserAsync(owner.User.Email);
-        //    return RedirectToAction(nameof(Index));
-        //}
+            _dataContext.Owners.Remove(owner);
+            await _dataContext.SaveChangesAsync();
+            await _userHelper.DeleteUserAsync(owner.User.Email);
+            return RedirectToAction(nameof(Index));
+        }
 
         private bool OwnerExists(int id)
         {
